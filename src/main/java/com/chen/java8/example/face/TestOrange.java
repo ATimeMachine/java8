@@ -9,5 +9,6 @@ package com.chen.java8.example.face;
 public class TestOrange {
     public static void main(String[] args) {
         new Orange().print();
+        new Eat().print();
     }
 }
