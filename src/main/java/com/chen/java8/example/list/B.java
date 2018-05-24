@@ -1,4 +1,4 @@
-package com.chen.java8.example.face;
+package com.chen.java8.example.list;
 
 /**
  * FileName: B
