@@ -1,8 +1,8 @@
 package com.chen.java8.example.stream;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * FileName: TestMenu
@@ -26,22 +26,25 @@ public class TestMenu {
         );*/
 
         List<Dish> dishes = new ArrayList<>();
-        for (int i = 0; i < 100000; i++) {
-            dishes.add( new Dish("a", false, i, Dish.Type.FISH));
+        for (int i = 0; i < 100; i++) {
+            dishes.add(new Dish("a", true, i, Dish.Type.FISH));
         }
-        long l = System.currentTimeMillis();
-        List<String> strings = new ArrayList<>();
-        for (Dish dish : dishes) {
-            if (dish.getCalories() > 5000) {
-                strings.add(dish.getName());
+        long c = System.currentTimeMillis();
+        //List<String> strings = new ArrayList<>();
+        dishes.sort(new Comparator<Dish>() {
+            @Override
+            public int compare(Dish o1, Dish o2) {
+                return o2.getCalories() - o1.getCalories();
             }
-        }
-        long l1 = System.currentTimeMillis();
-        System.out.println(l1 - l + "-----"+ strings.size());
-        long l2 = System.currentTimeMillis();
-        List names = dishes.stream().filter(d -> d.getCalories() > 5000).map(Dish::getName).collect(Collectors.toList());
-        long l3 = System.currentTimeMillis();
-        System.out.println(l3 - l2 + "-----"+ names.size());
+        });
+        long d = System.currentTimeMillis();
+        System.out.println(d - c + "-----" + dishes.get(0));
+        long a = System.currentTimeMillis();
+        //Optional<Integer> reduce = dishes.stream().map(Dish::getCalories).reduce(Integer::max);
+        dishes.sort(Comparator.comparing(Dish::getCalories));
+        //Integer integer = reduce.orElse(0);
+        long b = System.currentTimeMillis();
+        System.out.println(b - a + "-----" + dishes.get(0));
 
     }
 }
