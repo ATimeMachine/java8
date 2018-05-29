@@ -7,7 +7,7 @@ import java.util.List;
  * FileName: Test
  * Author:   SunEee
  * Date:     2018/5/22 17:11
- * Description: Test
+ * Description: Test策略模式
  */
 public class TestApple {
     public static void main(String[] args) {

@@ -8,7 +8,7 @@ import java.util.function.Function;
  * FileName: TestParallel
  * Author:   SunEee
  * Date:     2018/5/29 11:04
- * Description:
+ * Description: 合理使用平行和提高性能
  */
 public class TestParallel {
     public long sumAll(Function<Long, Long> adder, long n) {

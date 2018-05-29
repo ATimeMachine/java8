@@ -7,7 +7,7 @@ import java.util.List;
  * FileName: TestOrange
  * Author:   SunEee
  * Date:     2018/5/23 10:19
- * Description: test
+ * Description: list的泛型
  */
 public class TestList {
     public static void main(String[] args) {
