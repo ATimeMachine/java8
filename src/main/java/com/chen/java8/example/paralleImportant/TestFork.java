@@ -1,6 +1,4 @@
-package com.chen.java8.example.paralle;
-
-import com.chen.java8.example.property.TestParallel;
+package com.chen.java8.example.paralleImportant;
 
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.LongStream;

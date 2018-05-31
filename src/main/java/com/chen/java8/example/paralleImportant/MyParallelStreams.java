@@ -1,4 +1,4 @@
-package com.chen.java8.example.property;
+package com.chen.java8.example.paralleImportant;
 
 import java.util.stream.LongStream;
 import java.util.stream.Stream;

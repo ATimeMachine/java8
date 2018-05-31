@@ -1,7 +1,7 @@
 package com.chen.java8.example.web;
 
-import com.chen.java8.example.property.MyParallelStreams;
-import com.chen.java8.example.property.TestParallel;
+import com.chen.java8.example.paralleImportant.MyParallelStreams;
+import com.chen.java8.example.paralleImportant.TestParallel;
 
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
