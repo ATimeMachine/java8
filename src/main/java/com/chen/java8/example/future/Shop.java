@@ -40,4 +40,9 @@ public class Shop {
         delay();
         return new Random().nextDouble() * product.charAt(0) + product.charAt(1);
     }
+
+    public Future<Double> getPriceSupplyAsync(String product) { //升级版
+        
+        return CompletableFuture.supplyAsync(() -> calculatePrice(product));
+    }
 }

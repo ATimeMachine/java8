@@ -1,7 +1,5 @@
 package com.chen.java8.example.paralleImportant;
 
-import com.chen.java8.example.web.ParallelStreams;
-
 import java.util.function.Function;
 
 /**
@@ -12,7 +10,7 @@ import java.util.function.Function;
  */
 public class TestParallel {
     public static void main(String[] args) {
-        System.out.println(sumAll(new Function<Boolean, String>() { //原始方法
+      System.out.println(sumAll(new Function<Boolean, String>() { //原始方法
             @Override
             public String apply(Boolean b) {
                 if (b) {
@@ -25,12 +23,17 @@ public class TestParallel {
         TestFunction testFunction = new TestFunction();
         System.out.println(sumAll(testFunction,true)); //继承接口
 
-        System.out.println(TestParallel.sumAll(MyParallelStreams::sequentialSum, 10_000_000L)); //lambda
-        System.out.println(sumAll(MyParallelStreams::iterativeSum, 10_000_000L));
-        System.out.println(sumAll(MyParallelStreams::parallelSum, 10_000_000L));
-        System.out.println(sumAll(MyParallelStreams::sequentialSum2, 10_000_000L));
+        System.out.println(sumAll(MyParallelStreams::parallelSum, 10_000_000L));//lambda
         System.out.println(sumAll(MyParallelStreams::paralleSum2, 10_000_000L));
-        System.out.println(sumAll(ParallelStreams::iterativeSum, 10_000_000L));
+
+        System.out.println(sumAll(MyParallelStreams::iterativeSum, 10_000_000L));
+
+        System.out.println(TestParallel.sumAll(MyParallelStreams::sequentialSum, 10_000_000L));
+        System.out.println(sumAll(MyParallelStreams::sequentialSum2, 10_000_000L));
+
+        //方法使用的参数和传进去的参数不一样，可以将值这样传入
+        String s = "abcdefg";
+        System.out.println(sumAll((a) ->new MyParallelStreams().paralleSum3(a,s) , 10_000_000L));
 
 
 
@@ -51,6 +54,7 @@ public class TestParallel {
         return fastest;
     }*/
 
+   //升级版
     public static <T, R> long sumAll(Function<T, R> f, T input) {
         long fastest = Long.MAX_VALUE;
         for (int i = 0; i < 10; i++) {
