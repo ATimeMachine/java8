@@ -1,7 +1,6 @@
 package com.chen.java8.example.paralleImportant;
 
 import com.chen.java8.example.web.ParallelStreams;
-import org.junit.Test;
 
 import java.util.function.Function;
 
@@ -73,21 +72,6 @@ public class TestParallel {
             }
             return "false";
         }
-    }
-
-
-    @Test
-    public void test1() {
-       /* System.out.println(sumAll((i) -> {
-            long sum = 0L;
-            for (long j = 0L; j < i; j++) {
-                sum += j;
-            }
-            System.out.println(sum);
-            return sum;
-        }, 10_000_000));
-*/
-
     }
 
 }

@@ -1,6 +1,8 @@
 package com.chen.java8.example.paralleImportant;
 
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
+import java.util.stream.LongStream;
 
 /**
  * FileName: ForkJoinSumCalculator
@@ -48,5 +50,11 @@ public class ForkJoinSum extends RecursiveTask<Long>{
             sum += longs[i];
         }
         return sum;
+    }
+
+    public static long forkJoinSum(Long n) {
+        long[] longs = LongStream.rangeClosed(0, n).toArray();
+        ForkJoinSum task = new ForkJoinSum(longs);
+        return new ForkJoinPool().invoke(task);
     }
 }
