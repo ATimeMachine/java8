@@ -24,12 +24,16 @@ public class Shop {
     }
 
     public Future<Double> getPriceAsync(String product) {
-        CompletableFuture<Double> futurePrice = new CompletableFuture<>();
+        CompletableFuture<Double> futurePrice = new CompletableFuture<>(); //异步对象实例
         new Thread(() -> {
-            double price = this.calculatePrice(product);
-            futurePrice.complete(price);
+            try {
+                double price = this.calculatePrice(product);
+                futurePrice.complete(price);// 经过计算后，设置返回值
+            } catch (Exception e) {
+                futurePrice.completeExceptionally(e);//有异常抓住并抛出
+            }
         }).start();
-        return futurePrice;
+        return futurePrice; //无需等待，直接返回Future对象，值在上面设置进去
     }
 
     private double calculatePrice(String product) {
