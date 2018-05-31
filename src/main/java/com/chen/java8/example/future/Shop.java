@@ -11,7 +11,13 @@ import java.util.concurrent.Future;
  * Description: 商店
  */
 public class Shop {
-    public static void delay() {
+    private final String name;
+
+    Shop(String name) {
+        this.name = name;
+    }
+
+    private static void delay() {
         try {
             Thread.sleep(1000L);
         } catch (InterruptedException e) {
@@ -42,7 +48,11 @@ public class Shop {
     }
 
     public Future<Double> getPriceSupplyAsync(String product) { //升级版
-        
         return CompletableFuture.supplyAsync(() -> calculatePrice(product));
     }
+
+    public String getName() {
+        return name;
+    }
+
 }

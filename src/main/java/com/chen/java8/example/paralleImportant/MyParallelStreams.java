@@ -42,4 +42,8 @@ public class MyParallelStreams {
         return LongStream.rangeClosed(1, n).parallel().reduce(0L, Long::sum) + s.charAt(0);
     }
 
+    public long paralleSum4(long n) {
+        return LongStream.rangeClosed(1, n).parallel().reduce(0L, Long::sum);
+    }
+
 }

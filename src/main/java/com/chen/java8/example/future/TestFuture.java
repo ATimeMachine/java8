@@ -15,7 +15,7 @@ public class TestFuture {
 
     @Test
     public void test1() {
-        Shop shop = new Shop();
+        Shop shop = new Shop("Tom");
         long start = System.nanoTime();
         Future<Double> futurePrice = shop.getPriceAsync("my favorite product");
         long invocationTime = (System.nanoTime() - start) / 1_000_000;
@@ -25,7 +25,6 @@ public class TestFuture {
             System.out.print("做其他事情" + i + "->");
         }
         System.out.println();
-
 
         try {
             //最多等待1秒钟，否则退出，虽然是好，但是无法知道发生什么错误，所以一般是获取异步的异常并抛出
@@ -38,6 +37,11 @@ public class TestFuture {
         }
         long retrievalTime = (System.nanoTime() - start) / 1_000_000;
         System.out.println("最后时间：" + retrievalTime);
+
+    }
+
+    @Test
+    public void test2() {
 
     }
 }
