@@ -1,8 +1,8 @@
 package com.chen.java8.example.future;
 
 import java.util.Random;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
+
 
 /**
  * FileName: Shop
@@ -17,13 +17,7 @@ public class Shop {
         this.name = name;
     }
 
-    private static void delay() {
-        try {
-            Thread.sleep(1000L);
-        } catch (InterruptedException e) {
-            throw new RuntimeException();
-        }
-    }
+
 
     public double getPrice(String product) {
         return this.calculatePrice(product);
@@ -42,13 +36,30 @@ public class Shop {
         return futurePrice; //无需等待，直接返回Future对象，值在上面设置进去
     }
 
+    public CompletableFuture<Double> getPriceSupplyAsync(String product) { //升级版
+        return CompletableFuture.supplyAsync(() -> calculatePrice(product));
+    }
+
+    public CompletableFuture<String> getResult(String product,Shop shop) {
+        return CompletableFuture.supplyAsync(() -> getShopInfo(product,shop));//使用自定义的线程池
+    }
+
+    private String getShopInfo(String product,Shop shop) {
+        //很多操作
+        return  shop.getName() + " price is " + shop.getPrice(product);
+    }
+
     private double calculatePrice(String product) {
         delay();
         return new Random().nextDouble() * product.charAt(0) + product.charAt(1);
     }
 
-    public Future<Double> getPriceSupplyAsync(String product) { //升级版
-        return CompletableFuture.supplyAsync(() -> calculatePrice(product));
+    private void delay() {
+        try {
+            Thread.sleep(1000L);
+        } catch (InterruptedException e) {
+            throw new RuntimeException();
+        }
     }
 
     public String getName() {
