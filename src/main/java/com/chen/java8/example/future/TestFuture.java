@@ -72,7 +72,7 @@ public class TestFuture {
         printTime((a) ->findPrice4("myPhone27S"),testFuture);//使用顺序执行的异步执行 2s,使用线程池后1S
     }
 
-    public static  <T,R> void printTime(Function<T,R > function, T input) {
+     static  <T,R> void printTime(Function<T,R > function, T input) {
         long start = System.nanoTime();
         System.out.println(function.apply(input)); //顺序执行 4S
         long invocationTime = (System.nanoTime() - start) / 1_000_000;
@@ -84,7 +84,7 @@ public class TestFuture {
                 .collect(Collectors.toList());
     }
 
-    public List<String> findPrice2(String product) {
+    private List<String> findPrice2(String product) {
         return shops.parallelStream().map( shop -> String.format("%s price is %.2f",shop.getName(),shop.getPrice(product)))
                 .collect(Collectors.toList());
     }
@@ -99,7 +99,7 @@ public class TestFuture {
     }
 
 
-    public List<String> findPrice4(String product){ //上面方法整理
+    private List<String> findPrice4(String product){ //上面方法整理
         List<CompletableFuture<String>> futureList = shops.stream().map(shop -> shop.getResult(product, shop,executor)).collect(Collectors.toList());
         return futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
     }
