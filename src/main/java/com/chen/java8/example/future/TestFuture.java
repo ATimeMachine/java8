@@ -30,18 +30,12 @@ public class TestFuture {
     private final Executor executor = Executors.newFixedThreadPool(Math.min(shops.size(), 100), new ThreadFactory() {
         @Override
         public Thread newThread(Runnable r) {
-            Thread thread = new Thread();
+            Thread thread = new Thread(r); //一定要传r进去
             //System.out.println(shops.size());
             thread.setDaemon(true); //设置为守护线程，这种方式可以让程序关停。
             return thread;
         }
     });
-
-
-    public static void main(String[] args) {
-        TestFuture testFuture = new TestFuture();
-        printTime((a) ->a.findPrice3("myPhone27S"),testFuture );//使用顺序执行的异步执行
-    }
 
     @Test
     public void test1() {
@@ -98,7 +92,7 @@ public class TestFuture {
     public List<String> findPrice3(String product){
         //必须分开两个流，因为新的CompletableFuture只有在前一个操作完成后才创建，要不然等同与顺序执行
         List<CompletableFuture<String>> futureList = shops.stream().
-                map(shop -> CompletableFuture.supplyAsync(() -> shop.getName() + " price is " + shop.getPrice(product)))
+                map(shop -> CompletableFuture.supplyAsync(() -> shop.getName() + " price is " + shop.getPrice(product),executor))
                 .collect(Collectors.toList());
 
        return futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
