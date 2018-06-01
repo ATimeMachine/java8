@@ -72,7 +72,7 @@ public class TestFuture {
         printTime((a) ->findPrice4("myPhone27S"),testFuture);//使用顺序执行的异步执行 2s,使用线程池后1S
     }
 
-     static  <T,R> void printTime(Function<T,R > function, T input) {
+     private static  <T,R> void printTime(Function<T,R > function, T input) {
         long start = System.nanoTime();
         System.out.println(function.apply(input)); //顺序执行 4S
         long invocationTime = (System.nanoTime() - start) / 1_000_000;
