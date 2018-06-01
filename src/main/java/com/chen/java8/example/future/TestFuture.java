@@ -68,8 +68,8 @@ public class TestFuture {
     public void test2() {
         TestFuture testFuture = new TestFuture();
         //printTime(() ->findPrice1("myPhone27S") );//顺序执行 4S
-        printTime((a) ->findPrice2("myPhone27S"), testFuture);//并行流 1S
-        printTime((a) ->findPrice3("myPhone27S"),testFuture);//使用顺序执行的异步执行
+        printTime((a) ->findPrice2("myPhone27S"), testFuture);//并行流 1S 多的时候3-4s
+        printTime((a) ->findPrice4("myPhone27S"),testFuture);//使用顺序执行的异步执行 2s,使用线程池后1S
     }
 
     public static  <T,R> void printTime(Function<T,R > function, T input) {
@@ -100,7 +100,7 @@ public class TestFuture {
 
 
     public List<String> findPrice4(String product){ //上面方法整理
-        List<CompletableFuture<String>> futureList = shops.stream().map(shop -> shop.getResult(product, shop)).collect(Collectors.toList());
+        List<CompletableFuture<String>> futureList = shops.stream().map(shop -> shop.getResult(product, shop,executor)).collect(Collectors.toList());
         return futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
     }
 

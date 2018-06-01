@@ -40,8 +40,12 @@ public class Shop {
         return CompletableFuture.supplyAsync(() -> calculatePrice(product));
     }
 
-    public CompletableFuture<String> getResult(String product,Shop shop) {
-        return CompletableFuture.supplyAsync(() -> getShopInfo(product,shop));//使用自定义的线程池
+    public CompletableFuture<String> getResult(String product,Shop shop,Executor executor) {
+        if (null != executor){
+            return CompletableFuture.supplyAsync(() -> getShopInfo(product,shop),executor);//使用自定义的线程池
+        }else {
+            return CompletableFuture.supplyAsync(() -> getShopInfo(product,shop));//使用自定义的线程池
+        }
     }
 
     private String getShopInfo(String product,Shop shop) {
