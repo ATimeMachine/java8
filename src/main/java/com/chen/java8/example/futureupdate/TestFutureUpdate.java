@@ -80,10 +80,10 @@ public class TestFutureUpdate {
     public void test2() {
         long start = System.nanoTime();
         CompletableFuture[] futures = findPriceStream("myPhone27S")
-                .map(future -> future.thenAccept(s -> System.out.println(
+                .map(future -> future.thenAccept(s -> System.out.println( //关键方法：thenAccept()
                         s + "   使用时间是：" + (System.nanoTime() - start) / 1_000_000)))
                 .toArray(CompletableFuture[]::new);
-        CompletableFuture.allOf(futures).join(); //获取结果
+        CompletableFuture.allOf(futures).join(); //获取全部结果 //就获取其中一个最快的结果可以用 anyOf()
         System.out.println("最终用时：" +(System.nanoTime() - start) / 1_000_000);
     }
 }
