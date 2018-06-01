@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * FileName: TestFutureUpdate
@@ -64,5 +65,25 @@ public class TestFutureUpdate {
                 .map(future -> future.thenCompose(quote -> CompletableFuture.supplyAsync(() -> Discount.applyDiscount(quote),executor)))
                 .collect(Collectors.toList());
         return futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
+    }
+
+    //响应式异步
+    public Stream<CompletableFuture<String>> findPriceStream(String product) {
+        return stores.stream()
+                .map(store -> CompletableFuture.supplyAsync(() -> store.getPrice(product),executor))
+                .map(future -> future.thenApply(Quote::parse))
+                .map(future -> future.thenCompose(quote -> CompletableFuture.supplyAsync(() -> Discount.applyDiscount(quote),executor)));
+    }
+
+    //测试响应式异步
+    @Test
+    public void test2() {
+        long start = System.nanoTime();
+        CompletableFuture[] futures = findPriceStream("myPhone27S")
+                .map(future -> future.thenAccept(s -> System.out.println(
+                        s + "   使用时间是：" + (System.nanoTime() - start) / 1_000_000)))
+                .toArray(CompletableFuture[]::new);
+        CompletableFuture.allOf(futures).join(); //获取结果
+        System.out.println("最终用时：" +(System.nanoTime() - start) / 1_000_000);
     }
 }

@@ -11,6 +11,7 @@ import java.util.Random;
 public class Store {
 
     private final String name;
+    private static final Random random = new Random();
 
     Store(String name) {
         this.name = name;
@@ -19,7 +20,7 @@ public class Store {
     public String getPrice(String product) {
         double price = calculatePrice(product);
         Discount.Code code = Discount.Code.values()[new Random().nextInt(Discount.Code.values().length)];
-        return String.format("%s : %.2f : %s",name,price,code);
+        return String.format("%s:%.2f:%s",name,price,code);
 
     }
 
@@ -29,8 +30,9 @@ public class Store {
     }
 
     public static void delay() {
+        int delay = 500 + random.nextInt(2000);//随机延时
         try {
-            Thread.sleep(1000L);
+            Thread.sleep(delay);
         } catch (InterruptedException e) {
             throw new RuntimeException();
         }

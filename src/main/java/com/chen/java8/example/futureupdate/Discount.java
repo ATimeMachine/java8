@@ -18,13 +18,13 @@ public class Discount {
     }
 
     public static String applyDiscount(Quote quote) {
-        return quote.getStoreName() + " price is: " + quote.getPrice() + apply(quote.getPrice(), quote.getDiscountCode());
+        return quote.getStoreName() + " price is: " + apply(quote.getPrice(), quote.getDiscountCode());
     }
 
-    private static double apply(double price,Code code) {
+    private static String apply(double price,Code code) {
         double v = price * (100 - code.percentage) / 100;
         Store.delay();
-        return v;
+        return String.format("%.2f", v);
     }
 
 

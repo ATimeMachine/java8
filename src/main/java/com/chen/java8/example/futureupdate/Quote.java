@@ -18,7 +18,7 @@ public class Quote {
     }
 
     public static Quote parse(String s) {
-        String[] split = s.split(" : ");
+        String[] split = s.split(":");
         String storeName = split[0];
         double price = Double.parseDouble(split[1]);
         Discount.Code code = Discount.Code.valueOf(split[2]);
