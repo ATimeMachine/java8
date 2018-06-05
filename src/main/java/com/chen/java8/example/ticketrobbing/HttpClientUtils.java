@@ -1,5 +1,6 @@
 package com.chen.java8.example.ticketrobbing;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
@@ -13,11 +14,13 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.apache.logging.log4j.core.util.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -87,7 +90,7 @@ public class HttpClientUtils {
 		return result;
 	}
 
-	/*public static String post(String url, Map<String, Object> parameters) {
+	public static String post(String url, Map<String, Object> parameters) {
 		String result = null;
 		HttpEntity respEntity = null;
 		CloseableHttpClient httpclient = null;
@@ -103,7 +106,7 @@ public class HttpClientUtils {
 					if (null != entry.getValue()) {
 						if (entry.getValue() instanceof List) {
 							nvps.add(new BasicNameValuePair(entry.getKey(),
-									JsonUtils.mapper().writeValueAsString(entry.getValue())));
+									JSON.toJSONString(entry.getValue())));
 						} else {
 							nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue().toString()));
 						}
@@ -135,7 +138,7 @@ public class HttpClientUtils {
 			close(response, httpclient);
 		}
 		return result;
-	}*/
+	}
 
 	/**
 	 * 创建请求
