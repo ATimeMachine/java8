@@ -21,11 +21,11 @@ public class TestFutureUpdate {
             new Store("B"),
             new Store("C"),
             new Store("D"),
-            new Store("E")/*,
+            new Store("E"),
             new Store("F"),
             new Store("G"),
             new Store("H"),
-            new Store("I")*/
+            new Store("I")
     );
 
     //使用合适的线程池
@@ -40,8 +40,8 @@ public class TestFutureUpdate {
     });
     @Test
     public void test1() {
-        //printTime(() -> findPrices("myPhone27S"));
-        printTime(() -> findPriceAsync("myPhone27S"));
+        printTime(() -> findPrices("myPhone27S"));//使用并行流
+        printTime(() -> findPriceAsync("myPhone27S"));//使用异步
     }
 
     private static  <T> void printTime(Supplier<T> t) {
@@ -52,7 +52,7 @@ public class TestFutureUpdate {
     }
 
     public List<String> findPrices(String product) { //查找价格并计算折后价格
-       return stores.stream().map(store -> store.getPrice(product)).map(Quote::parse)
+       return stores.parallelStream().map(store -> store.getPrice(product)).map(Quote::parse)
                .map(Discount::applyDiscount).collect(Collectors.toList());
     }
 
@@ -80,7 +80,7 @@ public class TestFutureUpdate {
     public void test2() {
         long start = System.nanoTime();
         CompletableFuture[] futures = findPriceStream("myPhone27S")
-                .map(future -> future.thenAccept(s -> System.out.println( //关键方法：thenAccept()
+                .map(future -> future.thenAccept(s -> System.out.println( //关键方法：thenAccept()，允许将最快的返回结果执行其他事情
                         s + "   使用时间是：" + (System.nanoTime() - start) / 1_000_000)))
                 .toArray(CompletableFuture[]::new);
         CompletableFuture.allOf(futures).join(); //获取全部结果 //就获取其中一个最快的结果可以用 anyOf()
