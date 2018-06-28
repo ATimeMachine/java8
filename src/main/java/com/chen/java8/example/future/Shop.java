@@ -50,7 +50,7 @@ public class Shop {
 
     private String getShopInfo(String product,Shop shop) {
         //很多操作
-        return  shop.getName() + " price is " + shop.getPrice(product);
+        return  String.format("%s price is %.2f", shop.getName() , shop.getPrice(product));
     }
 
     private double calculatePrice(String product) {
@@ -58,7 +58,7 @@ public class Shop {
         return new Random().nextDouble() * product.charAt(0) + product.charAt(1);
     }
 
-    private void delay() {
+    public static void delay() {
         try {
             Thread.sleep(1000L);
         } catch (InterruptedException e) {

@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -46,6 +46,7 @@ public class TestFuture {
         System.out.println("调用时间：" + invocationTime);
 
         //做其他事情
+        Shop.delay();
         for (int i = 0; i < 10; i++) {
             System.out.print("做其他事情" + i + "->");
         }
@@ -60,21 +61,21 @@ public class TestFuture {
             e.printStackTrace();
         }
         long retrievalTime = (System.nanoTime() - start) / 1_000_000;
-        System.out.println("最后时间：" + retrievalTime);
+        System.out.println("最后时间：" + retrievalTime); //线程调用2次delay(),但是最终执行时间只是1秒多
 
     }
 
     @Test
     public void test2() {
-        TestFuture testFuture = new TestFuture();
+        String s = "myPhone27S";
         //printTime(() ->findPrice1("myPhone27S") );//顺序执行 4S
-        printTime((a) ->findPrice2("myPhone27S"), testFuture);//并行流 1S 多的时候3-4s
-        printTime((a) ->findPrice4("myPhone27S"),testFuture);//使用顺序执行的异步执行 2s,使用线程池后1S
+        printTime(() ->findPrice2(s));//并行流 1S 多的时候3-4s
+        printTime(() ->findPrice4(s));//使用顺序执行的异步执行 2s,使用线程池后1S
     }
 
-     private static  <T,R> void printTime(Function<T,R > function, T input) {
+     private static  <T> void printTime(Supplier<T> supplier) {
         long start = System.nanoTime();
-        System.out.println(function.apply(input)); //顺序执行 4S
+        System.out.println(supplier.get()); //顺序执行 4S
         long invocationTime = (System.nanoTime() - start) / 1_000_000;
         System.out.println("调用时间：" + invocationTime);
     }
@@ -92,7 +93,7 @@ public class TestFuture {
     public List<String> findPrice3(String product){
         //必须分开两个流，因为新的CompletableFuture只有在前一个操作完成后才创建，要不然等同与顺序执行
         List<CompletableFuture<String>> futureList = shops.stream().
-                map(shop -> CompletableFuture.supplyAsync(() -> shop.getName() + " price is " + shop.getPrice(product),executor))
+                map(shop -> CompletableFuture.supplyAsync(() ->  String.format("%s price is %.2f", shop.getName() , shop.getPrice(product)),executor))
                 .collect(Collectors.toList());
 
        return futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
