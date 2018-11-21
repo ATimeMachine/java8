@@ -27,10 +27,6 @@ import org.slf4j.LoggerFactory;
 public class HttpClientUtils {
 	private static final Logger logger = LoggerFactory.getLogger(HttpClientUtils.class);
 
-//	private static final String WXDEV_SERVER_URL = "http://wxtest.weilian.cn/b2b.php?m=b2b&c=data&a=";
-	
-	//	private static final String WXDEV_SERVER_URL = "http://wxdev.weilian.cn/b2b.php?m=b2b&c=data&a=";
-
 	/**
 	 * 发送 post（json）
 	 *          请求访问

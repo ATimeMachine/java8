@@ -1,6 +1,5 @@
 package com.chen.java8.example.httpUtils;
 
-import com.suneee.marketingcenter.marketingcenter.model.constant.ExceptionCodeEnum;
 
 public class MarketingCenterException extends Exception {
     private static final long serialVersionUID = 31772333777495229L;
