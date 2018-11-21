@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import com.alibaba.fastjson.JSON;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -18,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.dubbo.common.json.JSON;
 
 /**
  * 切面日志(此切面输出rest、provider所以方法的入参、出参、耗时)
@@ -51,9 +51,9 @@ public class LogAspect {
 
 	private static final int PRINT_FREQUENCY = 2;// 随机打印，数越大打印得越多
 
-	@Pointcut("((execution(* com.suneee.marketingcenter.*.rest.impl.*.*(..))) "
-			+ " && !(execution(* com.suneee.marketingcenter.*.rest.impl.CalDiscountMoneyServiceImpl.calDiscountMoneyfromOffline(..)))) "
-			+ " || (execution(* com.suneee.marketingcenter.*.provider.impl.*.*(..)))")
+	@Pointcut("((execution(* com.chen.java8.*.httpUtils.*.*(..))) "
+			+ " && !(execution(*  com.chen.java8.*.httpUtils(..)))"
+			+ " || (execution(* com.chen.java8.*.provider.impl.*.*(..))))")
 	public void aspect() {
 
 	}
@@ -164,7 +164,7 @@ public class LogAspect {
 		}
 
 		outputBuilder.append("\n接口出参:");
-		String outputString = JSON.json(result);
+		String outputString = JSON.toJSONString(result);
 
 		if (outputString.length() > MAX_LOG_LENGTH) {
 			outputBuilder.append(outputString.substring(0, MAX_LOG_LENGTH));
@@ -189,7 +189,7 @@ public class LogAspect {
 		}
 
 		outputBuilder.append(" \n接口出参:");
-		String outputString = JSON.json(result);
+		String outputString = JSON.toJSONString(result);
 		outputBuilder.append(outputString);
 
 		if (endTime.get() != null && startTime.get() != null) {
@@ -206,12 +206,6 @@ public class LogAspect {
 	 */
 	private String arrayToJsonString(Object[] params) {
 		List<Object> list = Arrays.asList(params);
-		String json = null;
-		try {
-			json = JSON.json(list);
-		} catch (IOException e) {
-			logger.error(requestMethod + "接口入参转json出错：", e.getMessage());
-		}
-		return json;
+		return JSON.toJSONString(list);
 	}
 }
