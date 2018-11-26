@@ -18,6 +18,7 @@ public class Store {
     }
 
     public String getPrice(String product) {
+        System.out.println(Thread.currentThread().getName());
         double price = calculatePrice(product);
         Discount.Code code = Discount.Code.values()[new Random().nextInt(Discount.Code.values().length)];
         return String.format("%s:%.2f:%s",name,price,code);
