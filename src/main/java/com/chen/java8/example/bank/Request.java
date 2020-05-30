@@ -30,7 +30,7 @@ public class Request{
     }
 
     //获取一个请求向量，0是随机获取
-    public static Request getOneRequest(Banker banker) {
+    public static Request getOneRequest() {
         try {
             Scanner scanner=new Scanner(System.in);
             System.out.println("请输入线程号：");
@@ -55,20 +55,18 @@ public class Request{
                 rsourcesByRandom = new Resources(a, b, c, d, e);
             }
             request.setRequest(rsourcesByRandom);
-            banker.getThreadMap().put(i, request);
             return request;
         } catch (Exception e) {
             System.out.println("输入错误，请重新输入");
-            return getOneRequest(banker);
+            return getOneRequest();
         }
     }
 
     //默认请求
-    public static Request defaultRequst(Banker banker) {
+    public static Request defaultRequst() {
         Request request = new Request(0);
         Resources rsourcesByRandom = Resources.getRsourcesByRandom();
         request.setRequest(rsourcesByRandom);
-        banker.getThreadMap().put(request.getThread(), request);
         return request;
     }
 

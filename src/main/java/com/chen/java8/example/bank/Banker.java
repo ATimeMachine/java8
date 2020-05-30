@@ -2,10 +2,7 @@ package com.chen.java8.example.bank;
 
 import lombok.Data;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -25,17 +22,15 @@ public class Banker{
     public static void main(String[] args) {
         Banker banker = new Banker(); //开银行
         //获取一个请求向量，0是随机获取,其他数字需要输入A-E资源的数量
-        Request one = Request.getOneRequest(banker); //来了第一个请求
+        Request one = Request.getOneRequest(); //来了第一个请求
         banker.algorithm(one,true);//银行家算法
-        Request two = Request.getOneRequest(banker); //来了第二个请求
+        Request two = Request.getOneRequest(); //来了第二个请求
         banker.algorithm(two,true);//银行家算法
-
-       /* Request request = Request.defaultRequst(banker); //多线程启动一个请求
+       /* Request request = Request.defaultRequst(); //多线程启动一个请求
         CompletableFuture.runAsync(() -> banker.algorithm(request, true));//银行家算法*/
-
-        Request three = Request.getOneRequest(banker); //来了第三个请求
+        Request three = Request.getOneRequest(); //来了第三个请求
         banker.algorithm(three,true);//银行家算法
-        Request four = Request.getOneRequest(banker); //来了第四个请求
+        Request four = Request.getOneRequest(); //来了第四个请求
         banker.algorithm(four,true);//银行家算法
     }
 
@@ -43,10 +38,15 @@ public class Banker{
 
     //算法
     public synchronized void algorithm(Request request,Boolean action) {
-        Request oldRequest = threadMap.get(request.getThread());
-        threadMap.put(request.getThread(), request);
         //打印情况
         this.printData(request);
+        //
+        Request oldRequest = threadMap.get(request.getThread());
+        if (null == oldRequest){
+            oldRequest = request;
+        }
+        threadMap.put(request.getThread(), request);
+        //初始化数据
         Resources available = this.getAvailable(); //银行家拥有的资源
         Resources allocation = oldRequest.getAllocation();//线程已分配在资源
         boolean finish = oldRequest.isFinish();
