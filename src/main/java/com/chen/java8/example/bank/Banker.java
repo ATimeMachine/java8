@@ -3,6 +3,7 @@ package com.chen.java8.example.bank;
 import lombok.Data;
 
 import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -21,17 +22,14 @@ public class Banker{
 
     public static void main(String[] args) {
         Banker banker = new Banker(); //开银行
-        //获取一个请求向量，0是随机获取,其他数字需要输入A-E资源的数量
-        Request one = Request.getOneRequest(); //来了第一个请求
-        banker.algorithm(one,true);//银行家算法
-        Request two = Request.getOneRequest(); //来了第二个请求
-        banker.algorithm(two,true);//银行家算法
-       /* Request request = Request.defaultRequst(); //多线程启动一个请求
-        CompletableFuture.runAsync(() -> banker.algorithm(request, true));//银行家算法*/
-        Request three = Request.getOneRequest(); //来了第三个请求
-        banker.algorithm(three,true);//银行家算法
-        Request four = Request.getOneRequest(); //来了第四个请求
-        banker.algorithm(four,true);//银行家算法
+        System.out.println("请输入请求量个数");
+        Scanner scanner=new Scanner(System.in);
+        int nextInt = scanner.nextInt();
+        for (int i = 0; i < nextInt; i++) {
+            //获取一个请求向量，0是随机获取,其他数字需要输入A-E资源的数量
+            Request one = Request.getOneRequest(); //来了一个请求
+            banker.algorithm(one,true);//银行家算法
+        }
         Map<Integer, Request> threadMap = banker.getThreadMap();
         boolean finish = true;
         for (Request request : threadMap.values()) {
@@ -67,7 +65,7 @@ public class Banker{
             return;
         }
         //判断是否超过最大需求量
-        Resources need = request.getNeed(); //需要的资源
+        Resources need = oldRequest.getNeed(); //需要的资源
         Resources requestResource = request.getRequest(); //请求的资源
         Boolean isLessNeed = need.compare(requestResource); //判断需求矩阵
         if (!isLessNeed) {
@@ -104,12 +102,12 @@ public class Banker{
     }
 
     private void printData(Request request) {
-        System.out.println("新的资源请求：" + request);
+        System.out.println(request.getThread() + "线程新的资源请求：" + request.getRequest());
         System.out.println("============当前系统资源情况=====================");
         System.out.println("当前系统资源：" +  this.getAvailable().toString());
         Map<Integer, Request> threadMap = this.getThreadMap();
         for (Request value : threadMap.values()) {
-            System.out.println(value.getThread() + "线程已分配资源：" + value.getAllocation().toString() + ",是否计算"+ value.isFinish());
+            System.out.println(value.getThread() + "线程已分配资源：" + value.getAllocation().toString() + ",是否计算："+ value.isFinish());
         }
         System.out.println("--------------------------结束---------------------------");
     }

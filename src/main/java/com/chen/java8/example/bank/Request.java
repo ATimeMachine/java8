@@ -62,14 +62,6 @@ public class Request{
         }
     }
 
-    //默认请求
-    public static Request defaultRequst() {
-        Request request = new Request(0);
-        Resources rsourcesByRandom = Resources.getRsourcesByRandom();
-        request.setRequest(rsourcesByRandom);
-        return request;
-    }
-
     public Resources getAllocation() {
         return allocation;
     }
@@ -96,10 +88,5 @@ public class Request{
 
     public void setFinish(boolean finish) {
         this.finish = finish;
-    }
-
-    @Override
-    public String toString() {
-        return thread + "线程的资源"  + "->" + request.toString();
     }
 }
