@@ -69,24 +69,11 @@ public class Banker{
         Resources requestResource = request.getRequest(); //请求的资源
         Boolean isLessNeed = need.compare(requestResource); //判断需求矩阵
         if (!isLessNeed) {
-            System.out.println("已超出它宣布的最大值：" + request.getThread());
-            request.setFinish(false);
-            //回收资源
-            available = available.plus(allocation);
-            this.setAvailable(available);
-            request.setAllocation(Resources.zoro);
-            request.setRequest(Resources.zoro);
-            if (action) {
-                System.out.println("****************************回收资源从新分配");
-                Map<Integer, Request> threadMap = this.getThreadMap();
-                for (Request mapRequest : threadMap.values()) {
-                    this.algorithm(mapRequest, false);
-                }
-            }
+            //回收资源重新分配
+            callback(request, action, available, allocation);
             return;
         }
         //判断是否有足够的资源
-
         Boolean isLessAvailable = available.compare(requestResource);
         if (!isLessAvailable) {
             System.out.println("尚无足够的资源：" + request.getThread());
@@ -99,6 +86,27 @@ public class Banker{
         request.setAllocation(allocation);
         //请求量为0
         request.setRequest(Resources.zoro);
+    }
+
+    private void callback(Request request, Boolean action, Resources available, Resources allocation) {
+        System.out.println("已超出它宣布的最大值：" + request.getThread());
+        request.setFinish(false);
+        //回收资源
+        available = available.plus(allocation);
+        this.setAvailable(available);
+        request.setAllocation(Resources.zoro);
+        request.setRequest(Resources.zoro);
+        if (action) {
+            System.out.println("****************************回收资源从新分配");
+            Map<Integer, Request> threadMap = this.getThreadMap();
+            Resources one = new Resources(1, 1, 1, 1, 1);
+            for (Request mapRequest : threadMap.values()) {
+                Resources mapRequestRequest = mapRequest.getRequest();
+                if (mapRequestRequest.compare(one)){
+                    this.algorithm(mapRequest, false);
+                }
+            }
+        }
     }
 
     private void printData(Request request) {
