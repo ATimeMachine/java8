@@ -30,8 +30,8 @@ public class Banker{
         Request two = Request.getOneRequest(banker); //来了第二个请求
         banker.algorithm(two,true);//银行家算法
 
-        Request request = Request.defaultRequst(banker); //多线程启动一个请求
-        CompletableFuture.runAsync(() -> banker.algorithm(request, true));//银行家算法
+       /* Request request = Request.defaultRequst(banker); //多线程启动一个请求
+        CompletableFuture.runAsync(() -> banker.algorithm(request, true));//银行家算法*/
 
         Request three = Request.getOneRequest(banker); //来了第三个请求
         banker.algorithm(three,true);//银行家算法
@@ -98,6 +98,6 @@ public class Banker{
         for (Request value : threadMap.values()) {
             System.out.println(value.getThread() + "线程已分配资源：" + value.getAllocation().toString() + ",是否结束"+ value.isFinish());
         }
-        System.out.println("============当前系统资源情况=====================");
+        System.out.println("--------------------------结束---------------------------");
     }
 }
