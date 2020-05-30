@@ -43,12 +43,13 @@ public class Banker{
 
     //算法
     public synchronized void algorithm(Request request,Boolean action) {
+        Request oldRequest = threadMap.get(request.getThread());
+        threadMap.put(request.getThread(), request);
         //打印情况
         this.printData(request);
         Resources available = this.getAvailable(); //银行家拥有的资源
-        Resources allocation = request.getAllocation();//线程已分配在资源
-        Resources zoro = new Resources(0, 0, 0, 0, 0);
-        boolean finish = request.isFinish();
+        Resources allocation = oldRequest.getAllocation();//线程已分配在资源
+        boolean finish = oldRequest.isFinish();
         if (!finish) {
             System.out.println("线程false;系统没有足够资源分配给线程：" + request.getThread());
             return;
@@ -63,13 +64,13 @@ public class Banker{
             //回收资源
             available = available.plus(allocation);
             this.setAvailable(available);
-            request.setAllocation(zoro);
-            request.setRequest(zoro);
+            request.setAllocation(Resources.zoro);
+            request.setRequest(Resources.zoro);
             if (action) {
                 System.out.println("****************************回收资源从新分配");
                 Map<Integer, Request> threadMap = this.getThreadMap();
-                for (Request oldRequest : threadMap.values()) {
-                    this.algorithm(oldRequest, false);
+                for (Request mapRequest : threadMap.values()) {
+                    this.algorithm(mapRequest, false);
                 }
             }
             return;
@@ -87,7 +88,7 @@ public class Banker{
         allocation = allocation.plus(requestResource);
         request.setAllocation(allocation);
         //请求量为0
-        request.setRequest(zoro);
+        request.setRequest(Resources.zoro);
     }
 
     private void printData(Request request) {

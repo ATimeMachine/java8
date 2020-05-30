@@ -21,6 +21,8 @@ public class Resources {
     private int D;
     private int E;
 
+    public static Resources zoro = new Resources(0, 0, 0, 0, 0);
+
     //计算需要需求矩阵
     public static Resources getNeed(Resources max, Resources allocation) {
         int a = max.getA() - allocation.getA();
@@ -55,7 +57,7 @@ public class Resources {
         return new Resources(a, b, c, d, e);
     }
 
-    //减法
+    //加法
     public Resources plus(Resources request){
         int a = this.getA() + request.getA();
         int b = this.getB() + request.getB();
