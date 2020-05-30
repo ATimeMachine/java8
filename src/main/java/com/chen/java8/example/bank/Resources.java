@@ -33,11 +33,11 @@ public class Resources {
 
     //随机获取资源
     public static Resources getRsourcesByRandom() {
-        int a = (int) (Math.random()*50);
-        int b = (int) (Math.random()*50);
-        int c = (int) (Math.random()*50);
-        int d = (int) (Math.random()*50);
-        int e = (int) (Math.random()*50);
+        int a = (int) (Math.random()*10);
+        int b = (int) (Math.random()*10);
+        int c = (int) (Math.random()*10);
+        int d = (int) (Math.random()*10);
+        int e = (int) (Math.random()*10);
         return new Resources(a, b, c, d, e);
     }
 

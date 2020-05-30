@@ -66,7 +66,7 @@ public class Banker{
             request.setAllocation(zoro);
             request.setRequest(zoro);
             if (action) {
-                System.out.println("==============回收资源从新分配=========");
+                System.out.println("****************************回收资源从新分配");
                 Map<Integer, Request> threadMap = this.getThreadMap();
                 for (Request oldRequest : threadMap.values()) {
                     this.algorithm(oldRequest, false);
