@@ -96,7 +96,7 @@ public class Banker{
         System.out.println("当前系统资源：" +  this.getAvailable().toString());
         Map<Integer, Request> threadMap = this.getThreadMap();
         for (Request value : threadMap.values()) {
-            System.out.println(value.getThread() + "线程已分配资源：" + value.getAllocation().toString() + ",是否结束"+ value.isFinish());
+            System.out.println(value.getThread() + "线程已分配资源：" + value.getAllocation().toString() + ",是否计算"+ value.isFinish());
         }
         System.out.println("--------------------------结束---------------------------");
     }
