@@ -32,6 +32,18 @@ public class Banker{
         banker.algorithm(three,true);//银行家算法
         Request four = Request.getOneRequest(); //来了第四个请求
         banker.algorithm(four,true);//银行家算法
+        Map<Integer, Request> threadMap = banker.getThreadMap();
+        boolean finish = true;
+        for (Request request : threadMap.values()) {
+            finish = request.isFinish();
+            if (!finish){
+                System.out.println("系统是不安全的");
+                break;
+            }
+        }
+        if (finish){
+            System.out.println("系统是安全的");
+        }
     }
 
 
