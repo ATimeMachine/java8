@@ -12,6 +12,7 @@ public class App {
         System.out.println("第3次提交");
         System.out.println("第4次提交");
         System.out.println("第5次提交");
+        System.out.println("第10次提交");
 
     }
 }
